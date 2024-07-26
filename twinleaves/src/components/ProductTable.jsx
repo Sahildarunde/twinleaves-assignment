@@ -161,7 +161,7 @@ const ProductTable = () => {
               onPageChange={(newPage) => setPage(newPage)}
               onPageSizeChange={(newPageSize) => {
                 setPageSize(newPageSize);
-                setPage(0); // Reset to first page when page size changes
+                setPage(0); 
               }}
               rowCount={totalProducts}
               loading={loading}
