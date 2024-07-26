@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 
 const ProductDetails = () => {
-  const { id } = useParams(); // Access route parameters
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,8 +13,8 @@ const ProductDetails = () => {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`); // Use proxy endpoint
-        console.log('Product data:', response.data); // Log the response data
+        const response = await axios.get(`http://localhost:5000/api/products/${id}`); 
+        console.log('Product data:', response.data); 
         setProduct(response.data);
       } catch (error) {
         console.error('Error fetching product details:', error);
@@ -28,7 +28,11 @@ const ProductDetails = () => {
   }, [id]);
 
   if (loading) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CircularProgress />
+      </div>
+    );
   }
 
   if (error) {
@@ -41,20 +45,19 @@ const ProductDetails = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-4 mt-32">
-
       <h1 className="text-2xl font-bold mb-4">{product.name}</h1>
       <div className="flex flex-col md:flex-row items-start md:items-center gap-12 mb-12">
         <img
-          src='/images.jpeg' // Updated path
+          src={product.image || '/images.jpeg'} 
           alt={product.name}
-          className="w-full  h-auto mb-4 md:mb-0" // Adjusted dimensions
+          className="w-full h-auto mb-4 md:mb-0"
         />
         <div className="md:ml-6">
           <p className="text-lg mb-7"><strong>Category:</strong> {product.main_category}</p>
           <p className="text-lg mb-7"><strong>Price:</strong> {product.compare_price || '50Rs'}</p>
           <p className="text-lg mb-7"><strong>Description:</strong> {product.description}</p>
           <p className="text-lg mb-7"><strong>Brand:</strong> {product.brand}</p>
-          <div className="flex justify-center mt-4 space-x-4  mb-7">
+          <div className="flex justify-center mt-4 space-x-4 mb-7">
             <Button
               variant="contained"
               color="success"
